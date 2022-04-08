@@ -126,7 +126,7 @@ contract DssAutoLine {
         //
 
         // Return if there was already an update in the same block
-        if (ilkLast == block.number) return line;
+        if ((ilkLast + 60) > block.timestamp ) return line;
 
         // Calculate collateral debt
         uint256 debt = mul(Art, rate);
@@ -149,10 +149,10 @@ contract DssAutoLine {
         if (lineNew > line) {
             // 1 SSTORE
             ilks[_ilk].lastInc = uint48(block.timestamp);
-            ilks[_ilk].last    = uint48(block.number);
+            ilks[_ilk].last    = uint48(block.timestamp);
             //
         } else {
-            ilks[_ilk].last    = uint48(block.number);
+            ilks[_ilk].last    = uint48(block.timestamp);
         }
 
         emit Exec(_ilk, line, lineNew);
